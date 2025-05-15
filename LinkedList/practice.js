@@ -5,10 +5,26 @@ class Node{
     }
 }
 
-class LinkedList{
+/*
+1.adding a node is clear;
+2.adding at particular index is clear
+3.readNodeAt is also valid one
+
+reading all the node is clear
+*/
+
+
+class LinkedList {
     constructor(){
         this.head = null;
         this.nodeCount = 0;
+    }
+
+    checkIsValidIndex(index){
+        if( index > this.nodeCount || isNaN(index)){
+            return false;
+        }
+        return true;
     }
 
     addANode(value){
@@ -24,7 +40,6 @@ class LinkedList{
         let current = this.head;
         while(current.next){
             current = current.next;
-            this.nodeCount++;
         }
 
         current.next = node;  // {data:value, next : {data :value,next:null} }
@@ -32,53 +47,77 @@ class LinkedList{
         return true;
     }
 
-    checkIsValidIndex(index){
-        if( index > this.nodeCount || isNaN(index)){
-            return false;
-        }
-        return true;
-    }
 
-    addAtIndex(index,value){
-        if(!this.checkIsValidIndex){
+    addAt(pos,value){
+        if(!this.checkIsValidIndex(pos)){
             return false; // provide the valid count;
         }
+
         if(!this.head){ // no-head, make this as head
             this.addANode(value);
             return true;
         }
+        
         let node = new Node(value);
 
-        let count = 0;
-        let current = this.head;
-        
-        while(count < index ){
-            current = current.next;
+        if(pos <=1 ){ //handling the worst case;
+            node.next= this.head;
+            this.head =  node;
+            return;
         }
-        node.next = current.next.next;
-        current.next = node;
+
+        let count = 1;
+        let current = this.head.next;
+        let prev =  this.head;
         
+        while(count < pos-1 && prev) {
+            prev = current;
+            current = current.next;
+            count++;
+        }
+
+        prev.next = node;
+        node.next = current;
+
         this.nodeCount++;
         return true;
     }
 
     //read
-    readNode(index) {
-        if(!this.checkIsValidIndex){ //validation;
+    readNodeAt(pos) {
+        if(!this.checkIsValidIndex(pos)){ //validation;
+            console.log(`${pos} is not valid`);
             return false;
         }
-        const current = this.head;
+        let current = this.head;
         
         if(!current || !current.next){
             return this.head;
         }
         
-        let count  = 0;
-        while(count <= index && current.next){
+        let count = 1;
+        while(count < pos && current.data){
             current = current.next;
             count++;
         }
-        return count;
+
+        console.log(current.data);
+        return true;
+    }
+
+    readAll(){
+        if(this.nodeCount <= 1){
+            return this.head;
+        }
+
+        let eles = [];
+        let current = this.head;
+
+        while(current){ 
+            eles.push(current.data);
+            current = current.next; 
+        }
+        return eles;
     }
 
     //delete 1st index;
@@ -128,4 +167,13 @@ class LinkedList{
     }
 }
 
+
+const obj = new LinkedList();
+obj.addANode(1); //1
+obj.addANode(2); //2
+obj.addANode(4); //3
+obj.addANode(5); //4
+ 
+
+obj.readNodeAt(1);
 
