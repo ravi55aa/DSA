@@ -173,7 +173,21 @@ obj.addANode(1); //1
 obj.addANode(2); //2
 obj.addANode(4); //3
 obj.addANode(5); //4
- 
 
 obj.readNodeAt(1);
+
+//create a dummy class and update it 
+class WorkHard{
+    constructor(unknownVal){
+        this.val = unknownVal;
+    }
+
+    hardWork(){
+        console.log("You are a HardWorker");
+    }
+
+    lazy(){
+        console.log("You are a Lazy man..");
+    }
+}
 
